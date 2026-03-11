@@ -28,6 +28,75 @@ import "./common.min.js";
     fetch(link.href, fetchOpts);
   }
 })();
+const soundBtn = document.querySelector(".menu__sound");
+const bgMusic = new Audio("@/../../assets/sound/main_bg.mp3");
+bgMusic.loop = true;
+bgMusic.volume = 0.05;
+const hoverSound = new Audio("@/../../assets/sound/btn_hover.mp3");
+hoverSound.volume = 0.4;
+hoverSound.preload = "auto";
+soundBtn.addEventListener("click", (e2) => {
+  e2.preventDefault();
+  if (bgMusic.muted) {
+    bgMusic.muted = false;
+    bgMusic.play().catch(() => {
+    });
+    soundBtn.classList.remove("muted");
+  } else {
+    bgMusic.muted = true;
+    soundBtn.classList.add("muted");
+  }
+});
+let lastHoverTime = 0;
+const HOVER_DELAY = 80;
+let audioUnlocked = false;
+function unlockAudio() {
+  if (audioUnlocked) return;
+  hoverSound.volume = 0;
+  hoverSound.play().then(() => {
+    hoverSound.pause();
+    hoverSound.currentTime = 0;
+    hoverSound.volume = 0.4;
+    audioUnlocked = true;
+    if (!bgMusic.muted) {
+      bgMusic.play().catch(() => {
+      });
+    }
+  }).catch(() => {
+  });
+}
+function playHoverSound() {
+  if (bgMusic.muted || !audioUnlocked) return;
+  const now = Date.now();
+  if (now - lastHoverTime < HOVER_DELAY) return;
+  lastHoverTime = now;
+  hoverSound.currentTime = 0;
+  hoverSound.play().catch(() => {
+  });
+}
+document.querySelectorAll(
+  ".menu__sound, .menu__settings, .menu__info, .menu__minus, .menu__button-spin, .menu__plus"
+).forEach((el) => {
+  el.addEventListener("mouseenter", playHoverSound);
+});
+const spinSound = new Audio("@/../../assets/sound/btn_click.mp3");
+spinSound.volume = 0.6;
+spinSound.preload = "auto";
+let lastSpinTime = 0;
+const SPIN_SOUND_DELAY = 300;
+function playSpinSound() {
+  if (bgMusic.muted || !audioUnlocked) return;
+  const now = Date.now();
+  if (now - lastSpinTime < SPIN_SOUND_DELAY) return;
+  lastSpinTime = now;
+  spinSound.currentTime = 0;
+  spinSound.play().catch(() => {
+  });
+}
+const spinBtn$1 = document.querySelector(".menu__button-spin");
+spinBtn$1.addEventListener("click", () => {
+  playSpinSound();
+});
 const _PI = Math.PI;
 const VERSION = "2.2.0";
 const P2D = "p2d";
@@ -13363,8 +13432,8 @@ function requireFileSaver() {
             var reader = new FileReader();
             reader.onloadend = function() {
               var url = is_chrome_ios ? reader.result : reader.result.replace(/^data:[^;]*;/, "data:attachment/file;");
-              var popup = view.open(url, "_blank");
-              if (!popup) view.location.href = url;
+              var popup2 = view.open(url, "_blank");
+              if (!popup2) view.location.href = url;
               url = void 0;
               filesaver.readyState = filesaver.DONE;
               dispatch_all();
@@ -78567,105 +78636,26 @@ type(p5$2);
 p5$2.registerAddon(shader);
 p5$2.registerAddon(strands);
 Promise.all([waitForDocumentReady(), waitingForTranslator]).then(_globalInit);
-const bgMusic = new Audio("@/../../assets/sound/main_bg.mp3");
-bgMusic.loop = true;
-bgMusic.volume = 0.05;
-bgMusic.muted = true;
-const soundBtn = document.querySelector(".menu__sound");
-soundBtn.classList.add("muted");
-soundBtn.addEventListener("click", (e2) => {
-  e2.preventDefault();
-  if (bgMusic.muted) {
-    bgMusic.muted = false;
-    bgMusic.play().catch(() => {
-    });
-    soundBtn.classList.remove("muted");
-  } else {
-    bgMusic.muted = true;
-    soundBtn.classList.add("muted");
+const popup = document.querySelector(".popup");
+const popupTitle = popup.querySelector(".popup__title");
+const popupText = popup.querySelector(".popup__text");
+const popupBtn = popup.querySelector(".cta-button");
+function openAgePopup() {
+  popup.dataset.mode = "age";
+  popupTitle.textContent = "Are you 18+?";
+  popupText.textContent = "You must confirm that you are over 18 years old.";
+  popupBtn.textContent = "Yes, I am 18+";
+  popupBtn.href = "#";
+  popup.classList.add("show");
+}
+popupBtn.addEventListener("click", (e2) => {
+  if (popup.dataset.mode === "age") {
+    e2.preventDefault();
+    unlockAudio();
+    popup.classList.remove("show");
+    popup.dataset.mode = "";
   }
 });
-const hoverSound = new Audio("@/../../assets/sound/btn_hover.mp3");
-hoverSound.volume = 0.4;
-hoverSound.preload = "auto";
-let lastHoverTime = 0;
-const HOVER_DELAY = 80;
-let audioUnlocked = false;
-function unlockAudio() {
-  if (audioUnlocked) return;
-  hoverSound.volume = 0;
-  hoverSound.play().then(() => {
-    hoverSound.pause();
-    hoverSound.currentTime = 0;
-    hoverSound.volume = 0.4;
-    audioUnlocked = true;
-  }).catch(() => {
-  });
-}
-document.addEventListener("click", unlockAudio, { once: true });
-document.addEventListener("touchstart", unlockAudio, { once: true });
-function playHoverSound() {
-  if (bgMusic.muted || !audioUnlocked) return;
-  const now = Date.now();
-  if (now - lastHoverTime < HOVER_DELAY) return;
-  lastHoverTime = now;
-  hoverSound.currentTime = 0;
-  hoverSound.play().catch(() => {
-  });
-}
-document.querySelectorAll(
-  ".menu__sound, .menu__settings, .menu__info, .menu__minus, .menu__button-spin, .menu__plus"
-).forEach((el) => {
-  el.addEventListener("mouseenter", playHoverSound);
-});
-const spinSound = new Audio("@/../../assets/sound/btn_click.mp3");
-spinSound.volume = 0.6;
-spinSound.preload = "auto";
-let lastSpinTime = 0;
-const SPIN_SOUND_DELAY = 300;
-function playSpinSound() {
-  if (bgMusic.muted || !audioUnlocked) return;
-  const now = Date.now();
-  if (now - lastSpinTime < SPIN_SOUND_DELAY) return;
-  lastSpinTime = now;
-  spinSound.currentTime = 0;
-  spinSound.play().catch(() => {
-  });
-}
-const spinBtn$1 = document.querySelector(".menu__button-spin");
-spinBtn$1.addEventListener("click", () => {
-  playSpinSound();
-});
-const ROWS = 7;
-const COLS = 7;
-const ICON_PATH = "assets/img/icon/";
-const SYMBOLS = [
-  "pic_01.png",
-  "pic_02.png",
-  "pic_03.png",
-  "pic_04.png",
-  "pic_05.png",
-  "pic_06.png",
-  "pic_07.png",
-  "pic_08.png",
-  "pic_09.png"
-];
-const WIN_TYPE = {
-  NONE: "none",
-  SMALL: "small",
-  BIG: "big"
-};
-const DROP_TIME = 100;
-const DROP_DELAY = 0.07;
-const DISAPPEAR_TIME = 450;
-const WIN_TIME = 1e3;
-const drum = document.querySelector(".drum");
-const oldLayer = drum.querySelector(".drum-layer--old .drum-columns");
-const newLayer = drum.querySelector(".drum-layer--new .drum-columns");
-const spinBtn = document.querySelector(".menu__button-spin");
-let spinning = false;
-let spinCount = 0;
-let currentGrid = [];
 let confettiP5 = null;
 let confettiContainer = null;
 function startConfetti(container) {
@@ -78758,12 +78748,49 @@ function startConfetti(container) {
   }, confettiContainer);
 }
 function openPopup() {
-  const popup = document.querySelector(".popup");
+  const popup2 = document.querySelector(".popup");
+  popupTitle.textContent = "Congratulations!";
+  popupText.textContent = "Ready to continue playing?";
+  popupBtn.textContent = "Download Now";
+  popupBtn.href = "#";
   setTimeout(() => {
-    popup.classList.add("show");
-    startConfetti(popup);
+    popup2.classList.add("show");
+    startConfetti(popup2);
   }, 100);
 }
+const ROWS = 7;
+const COLS = 7;
+const ICON_PATH = "assets/img/icon/";
+const SYMBOLS = [
+  "pic_01.png",
+  "pic_02.png",
+  "pic_03.png",
+  "pic_04.png",
+  "pic_05.png",
+  "pic_06.png",
+  "pic_07.png",
+  "pic_08.png",
+  "pic_09.png"
+];
+const WIN_TYPE = {
+  NONE: "none",
+  SMALL: "small",
+  BIG: "big"
+};
+const DROP_TIME = 100;
+const DROP_DELAY = 0.07;
+const DISAPPEAR_TIME = 450;
+const WIN_TIME = 1e3;
+const drum = document.querySelector(".drum");
+const oldLayer = drum.querySelector(".drum-layer--old .drum-columns");
+const newLayer = drum.querySelector(".drum-layer--new .drum-columns");
+const spinBtn = document.querySelector(".menu__button-spin");
+let spinning = false;
+let spinCount = 0;
+let currentGrid = [];
+window.addEventListener("load", () => {
+  openAgePopup();
+});
 function randSymbol() {
   return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 }

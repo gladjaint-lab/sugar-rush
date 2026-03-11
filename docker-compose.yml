@@ -1,0 +1,40 @@
+services:
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    ports:
+      - "8080:80"
+    platform: linux/amd64
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: fls_db
+      WORDPRESS_DB_USER: fls_user
+      WORDPRESS_DB_PASSWORD: fls_password
+    volumes:
+      - ./backend/wordpress:/var/www/html
+      - ./src/components/wordpress/fls-theme:/var/www/html/wp-content/themes/fls-theme
+      - ./src/components/wordpress/fls-plugin:/var/www/html/wp-content/plugins/fls-plugin
+      - ./template_modules/wordpress/wp-config.php:/var/www/html/wp-config.php
+    networks:
+      - wordpress_network
+  db:
+    image: mysql:5.7
+    container_name: wordpress_db
+    platform: linux/amd64
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: fls_password
+      MYSQL_DATABASE: fls_db
+      MYSQL_USER: fls_user
+      MYSQL_PASSWORD: fls_password
+    volumes:
+      - ./backend/database:/var/lib/mysql
+    networks:
+      - wordpress_network
+volumes:
+  wordpress_data:
+  db_data:
+networks:
+  wordpress_network:
+    driver: bridge

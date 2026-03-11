@@ -1,0 +1,12 @@
+[data-fls-zoom] {
+	position: relative;
+	overflow: hidden;
+}
+[data-fls-zoom-image] {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 5;
+	pointer-events: none;
+	max-width: none;
+}

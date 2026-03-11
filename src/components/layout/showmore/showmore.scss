@@ -1,0 +1,17 @@
+[data-fls-showmore] {
+}
+[data-fls-showmore-content] {
+}
+[data-fls-showmore-button] {
+	span {
+		&:last-child {
+			display: none;
+		}
+		.--showmore-active & {
+			display: none;
+			&:last-child {
+				display: block;
+			}
+		}
+	}
+}

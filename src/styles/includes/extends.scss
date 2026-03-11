@@ -1,0 +1,80 @@
+// Шаблони (заготівлі)
+// @extend %ім'я шаблону;
+// Сніппет (SCSS): ex
+
+// Стилі для чуйних зображеннь (IBG)
+%ibg {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+// Лічильник для списку
+%listCounter {
+	list-style-type: none;
+	counter-reset: item;
+	li {
+		position: relative;
+		&:before {
+			counter-increment: item;
+			content: counter(item);
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+	}
+}
+// Адаптивне відео
+%responsiveVideo {
+	video,
+	iframe,
+	object,
+	embed {
+		aspect-ratio: 16 / 9;
+	}
+}
+// Відео як фон
+%videoBackground {
+	video,
+	iframe,
+	object,
+	embed {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		min-width: 100%;
+		min-height: 100%;
+		width: auto;
+		height: auto;
+		z-index: -100;
+		transform: translateX(-50%) translateY(-50%);
+		object-fit: cover;
+	}
+}
+// Сірий фільтр
+%grayfilter {
+	transition: all 0.3s ease 0s;
+	filter: grayscale(1);
+	@media (any-hover: hover) {
+		&:hover {
+			filter: grayscale(0);
+		}
+	}
+}
+// Скасувати виділення
+%noselect {
+	user-select: none;
+}
+// Дзеркальне відображення
+%mirror {
+	transform: scale(-1, 1);
+}
+// Плавний скролл
+%smoothscroll {
+	-webkit-overflow-scrolling: touch;
+}
+// Сховати скролл
+%hidescroll {
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}

@@ -1,0 +1,19 @@
+ <head>
+	<if condition="'[[preloader.enable]]' === 'true'">
+		<include src="@components/effects/preloader/preloader.html" locals='{"once":"[[preloader.once]]"}'></include>
+	</if>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<include src="@components/layout/head/fonts-preload.html"></include>
+	<link rel="stylesheet" href="@styles/fonts/fonts.css">
+	<link rel="stylesheet" href="@styles/fonts/iconfont.css">
+	<link rel="stylesheet" href="@styles/style.scss">
+	<link rel="shortcut icon" href="@img/favicon.ico">
+	<if condition="'[[keywords]]' !== ''">
+		<meta name="keywords" content="[[keywords]]">
+	</if>
+	<if condition="'[[description]]' !== ''">
+		<meta name="description" content="[[description]]">
+	</if>
+	<title>[[title]]</title>
+</head>

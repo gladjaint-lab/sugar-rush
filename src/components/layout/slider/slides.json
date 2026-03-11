@@ -1,0 +1,10 @@
+[
+	{
+		"img":"@img/cover.jpg", 
+		"title": "Some title"
+	},
+	{
+		"img":"@img/cover.avif", 
+		"title": "Some other title"
+	}
+]

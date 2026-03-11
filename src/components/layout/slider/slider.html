@@ -1,0 +1,20 @@
+<div data-fls-slider class="block swiper">
+	<div class="block__wrapper swiper-wrapper">
+		<fetch url="@components/layout/slider/slides.json">
+			<each loop="item in response">
+				<include src="@components/layout/slider/slider-item.html" locals='{"item":[[item]]}'></include>
+			</each>
+		</fetch>
+	</div>
+</div>
+<div data-fls-slider class="block swiper">
+	<div class="block__wrapper swiper-wrapper">
+		<each loop="item in [
+				{'img':'@img/cover.jpg','title':'Title number one'},
+				{'img':'@img/cover.avif', 'title':'Title number two'},
+				{'img':'@img/cover.webp', 'title':'Title number three'}
+			]">
+			<include src="@components/layout/slider/slider-item.html" locals='{"item":[[item]]}'></include>
+		</each>
+	</div>
+</div>

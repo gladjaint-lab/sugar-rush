@@ -1,0 +1,70 @@
+[data-fls-cursor],
+[data-fls-cursor] * {
+	cursor: none !important;
+}
+.fls-cursor {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	pointer-events: none;
+	&__shadow {
+		will-change: transform;
+		transition: all 0.05s linear 0s;
+		position: fixed;
+		width: toRem(50);
+		height: toRem(50);
+		&::after {
+			content: "";
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			border: 3px solid #000;
+			animation: rotate 5s infinite linear;
+			@keyframes rotate {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(-360deg);
+				}
+			}
+		}
+	}
+	&__pointer {
+		position: fixed;
+		width: 10px;
+		height: 10px;
+		top: 0;
+		left: 0;
+		&::after {
+			content: "";
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			background-color: rgba(0, 0, 0, 0.8);
+			transition: all 0.5s ease 0s;
+			border-radius: 50%;
+		}
+	}
+	&.--hover {
+		.fls-cursor__pointer::after {
+			transform: scale(5);
+		}
+		.fls-cursor__shadow::after {
+		}
+	}
+	&.--active {
+		.fls-cursor__pointer::after {
+			transition: all 0.05s ease 0s;
+			transform: scale(1);
+		}
+		.fls-cursor__shadow::after {
+		}
+	}
+}

@@ -1,0 +1,109 @@
+body {
+	.--fullpage-init & {
+		// Щоб вимкнути оновлення сторінки свайпом на телефоні
+		overflow: hidden;
+		touch-action: none;
+		overscroll-behavior: none;
+	}
+}
+
+// Оболонка секцій
+[data-fls-fullpage] {
+	min-height: 100svh;
+	.--fullpage-init & {
+		// Для того щоб секції не перекривали буллети
+		z-index: 1;
+		// Відносно чого позиціонуються секції
+		touch-action: none;
+		position: relative;
+		overflow: hidden;
+	}
+}
+
+// Секція
+[data-fls-fullpage-section] {
+	.--fullpage-switching & {
+		touch-action: none;
+	}
+	.--fullpage-init & {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: 100%;
+		overflow: auto;
+	}
+
+	// Модифікації
+	.--fullpage-init .slider-mode &,
+	.--fullpage-init .cards-mode & {
+		transition: transform 0.7s cubic-bezier(0.55, 0.085, 0, 0.99) 0s;
+	}
+	.--fullpage-init .fade-mode & {
+		transition:
+			opacity 0.5s ease-in-out 0s,
+			visibility 0.5s ease-in-out 0s;
+	}
+}
+
+// Оболонка буллетів
+.--fullpage-bullets {
+	position: fixed;
+	top: 50%;
+	transform: translate(0, -50%);
+	right: toRem(40);
+	max-height: 100%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	z-index: 2;
+	gap: toRem(10);
+	@media (max-width: $pc) {
+		right: toRem(20);
+	}
+	@media (max-width: $mobileSmall) {
+		top: auto;
+		bottom: toRem(20);
+		transform: translate(50%, 0);
+		flex-direction: row;
+		right: 50%;
+	}
+
+	// Булет
+	& .--fullpage-bullet {
+		cursor: pointer;
+		width: toRem(20);
+		height: toRem(20);
+		flex: 0 0 toRem(20);
+		border-radius: toRem(10);
+		background-color: #100c46;
+		box-shadow:
+			toRem(0) toRem(0) toRem(3) #6257fe,
+			0 0 toRem(30) rgba(255, 255, 255, 0.8);
+		border: toRem(1) solid #fff;
+		opacity: 0.6;
+		transition:
+			transform 0.4s ease-in-out 0s,
+			opacity 0.4s ease-in-out 0s,
+			background-color 0.4s ease-in-out 0s,
+			box-shadow 0.4s ease-in-out 0s;
+		@media (any-hover: hover) {
+			&:hover {
+				opacity: 1;
+			}
+		}
+	}
+
+	& .--fullpage-bullet-active {
+		opacity: 1;
+		background-color: #6257fe;
+		transform: translate3D(toRem(-5), toRem(-2), 0);
+		box-shadow:
+			toRem(5) toRem(2) toRem(3) #100c46,
+			0 0 toRem(30) rgba(255, 255, 255, 0.8);
+	}
+}

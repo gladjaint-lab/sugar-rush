@@ -1,0 +1,125 @@
+@use "sass:math";
+@use "@styles/settings.scss";
+
+//Percent
+@function percent($px, $from: 100) {
+	$result: math.div($px, $from) * 100%;
+	@return $result;
+}
+//REM
+@function toRem($px, $current: 16) {
+	$result: math.div($px, $current) + rem;
+	@return $result;
+}
+//EM
+@function toEm($px, $current: 16) {
+	$result: math.div($px, $current) + em;
+	@return $result;
+}
+
+//Currency
+@mixin currency($sym) {
+	&::after {
+		content: "#{$sym}";
+	}
+}
+
+// Трикутник
+@mixin triangle($direction, $color, $size, $size2: $size) {
+	@if $direction == left {
+		border: #{$size2}px solid transparent;
+		border-right: #{$size}px solid $color;
+	}
+	@if $direction == right {
+		border: #{$size2}px solid transparent;
+		border-left: #{$size}px solid $color;
+	}
+	@if $direction == top {
+		border: #{$size2}px solid transparent;
+		border-bottom: #{$size}px solid $color;
+	}
+	@if $direction == bottom {
+		border: #{$size2}px solid transparent;
+		border-top: #{$size}px solid $color;
+	}
+}
+
+// Grids
+@mixin gridCards($type: fit, $min: 280px, $max: 1fr, $gap: 30px) {
+	display: grid;
+	gap: $gap;
+	grid-template-columns: repeat(auto-#{$type}, minmax($min, $max));
+}
+
+// Адаптивна властивість (clamp)
+@mixin adaptiveValue($property, $startSize, $minSize: settings.$minSize, $keepSize: 0, $widthFrom: settings.$containerWidth, $widthTo: settings.$minWidth) {
+	@if ($startSize==0) {
+		$startSize: 0.000001;
+	}
+	@if ($minSize==0) {
+		$minSize: 0.000001;
+	}
+	@if ($widthFrom == settings.$containerWidth and settings.$maxWidthContainer == 0) {
+		$widthFrom: settings.$maxWidth;
+	}
+
+	// Брейк-поїнти в EM
+	$widthFromMedia: toEm($widthFrom);
+	$widthToMedia: toEm($widthTo);
+
+	// Формула плаваючого значення
+	// Источник: https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/
+	$slope: math.div(($startSize - $minSize), ($widthFrom - $widthTo));
+	$yIntersection: -$widthTo * $slope + $minSize;
+	@if ($yIntersection==0) {
+		$yIntersection: 0.000001;
+	}
+	$flyValue: #{$yIntersection}px " + " #{$slope * 100}vw;
+
+	// Отримання значення властивості
+	$propertyValue: #{"clamp(" #{$minSize}px "," $flyValue "," #{$startSize}px ")"};
+	// Якщо негативні значення
+	@if ($minSize > $startSize) {
+		$propertyValue: #{"clamp(" #{$startSize}px "," $flyValue "," #{$minSize}px ")"};
+	}
+	// Встановлюємо значення за замовчуванням
+	@if $keepSize != 1 and $keepSize != 3 {
+		@media (width > $widthFromMedia) {
+			#{$property}: #{$startSize}px;
+		}
+	}
+	// Адаптуємо розмір у проміжку між зазначеними ширинами в'юпорту
+	@media (width > $widthToMedia) and (width <= $widthFromMedia) {
+		#{$property}: $propertyValue;
+	}
+	@if $keepSize != 1 and $keepSize != 2 {
+		@media (width <= $widthToMedia) {
+			#{$property}: #{$minSize}px;
+		}
+	}
+}
+
+// Grid-контейнер
+@mixin gridContainer($type: 0, $container: settings.$maxWidthContainer, $paddingStart: math.div(settings.$containerPadding, 2), $paddingEnd: math.div(settings.$containerPadding, 2)) {
+	display: grid;
+	min-width: 0;
+	grid-template-columns: #{$paddingStart}px 1fr minmax(auto, #{$container}px) 1fr #{$paddingEnd}px;
+	> * {
+		min-width: 0;
+		@if $type==1 {
+			grid-column: 1 / 6;
+		} @else if $type==2 {
+			grid-column: 2 / 5;
+		} @else if $type==3 {
+			grid-column: 3 / 6;
+		} @else if $type==4 {
+			grid-column: 1 / 4;
+		} @else if $type==5 {
+			grid-column: 2 / 4;
+		} @else if $type==6 {
+			grid-column: 3 / 5;
+		} @else {
+			grid-column: 3 / 4;
+		}
+	}
+}

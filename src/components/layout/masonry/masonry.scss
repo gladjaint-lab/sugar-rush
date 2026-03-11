@@ -1,0 +1,23 @@
+.masonry {
+	// .masonry__filter
+	&__filter {
+	}
+	// .masonry__items
+	&__items {
+	}
+	// .masonry__item
+	&__item {
+		border: 1px solid #000;
+		padding: 30px;
+	}
+}
+.filter-masonry {
+	display: flex;
+	// .filter-masonry__item
+	&__item {
+	}
+	// .filter-masonry__link
+	&__link {
+		padding: 10px;
+	}
+}

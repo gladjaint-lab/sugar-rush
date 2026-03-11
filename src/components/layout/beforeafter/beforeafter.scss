@@ -1,0 +1,47 @@
+[data-fls-beforeafter] {
+	position: relative;
+}
+[data-fls-beforeafter-before],
+[data-fls-beforeafter-after] {
+	img {
+		user-select: none;
+	}
+}
+[data-fls-beforeafter-before] {
+	img {
+		width: 100%;
+	}
+}
+[data-fls-beforeafter-after] {
+	position: absolute;
+	width: 50%;
+	height: 100%;
+	top: 0;
+	right: 0;
+	overflow: hidden;
+	img {
+		max-width: none;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+}
+[data-fls-beforeafter-arrow] {
+	cursor: grab;
+	position: absolute;
+	left: 50%;
+	top: 0;
+	height: 100%;
+	width: 0.188rem;
+	z-index: 2;
+	background-color: #7a956b;
+	&::before,
+	&::after {
+		content: "";
+	}
+	&::before {
+	}
+	&::after {
+	}
+}

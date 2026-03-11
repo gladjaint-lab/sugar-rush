@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Іконковий шрифт</title>
+	<style>
+		html,body{
+			height: 100%;
+		}
+		body{
+			padding: 1.875rem;
+			font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+			font-size: 1em;
+			background-color:#333;
+			color:#fff;
+		}
+		.iconfont-page h1{
+			font-size: 1.875rem;
+			margin-bottom: 2rem;
+		}
+		.iconfont-page ul{
+			display: flex;
+			flex-wrap: wrap;
+			gap: 2.5rem;
+			margin: 0;
+			padding: 0;
+		}
+		.iconfont-page ul li{
+			margin-bottom: 0.625rem;
+			display: inline-flex;
+			gap: 0.625rem;
+			list-style: none;
+			align-items: center;
+		}
+		.iconfont-page ul li::before{
+			font-size: 2rem;
+		}
+		{{{styles}}}
+	</style>
+</head>
+<body>
+	<div class="iconfont-page">
+		<h1>Перелік іконок та їх класів:</h1>
+		<ul>
+			{{#each names}}
+				<li class="{{../classPrefix}}{{this}}">{{../classPrefix}}{{this}}</li>
+			{{/each}}
+		</ul>
+	</div>
+</body>
+</html>
